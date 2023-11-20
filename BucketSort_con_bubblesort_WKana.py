@@ -1,4 +1,14 @@
-""" Bucket Sort """
+""" Librerias para realizar los graficos """
+import numpy as np
+import matplotlib.pyplot as plt
+""" Librerias para medir el tiempo de ejecucion """
+import random
+import time
+
+""" Bucket Sort Implementacion """
+""" Se implementará con un array como contenedor de buckets,
+ para los buckets se usará listas enlazadas y
+ para ordenar cada bucket se utilizará Bubble Sort"""
 class Nodo:
     def __init__(self, valor) -> None:
         self.valor = valor
@@ -138,7 +148,7 @@ class ListaEnlazada:
                     if self.cola.valor <= actual.valor:
                         self.cola = actual
                     swapped = True
-                elif actual.valor == siguiente.valor:
+                elif actual.valor <= siguiente.valor:
                     self.cola = siguiente
                     
                 previo = actual
@@ -193,8 +203,8 @@ class BucketSort:
         self.buckets = [None] * self.numeroBuckets
         self.globalMax = max(array)  # rango minimo
         self.globalMin = min(array)  # rango maximo
-        self.rango = self.globalMax - self.globalMin  # rango
-        self.bucketRango = self.rango / self.numeroBuckets
+        self.rango = self.globalMax - self.globalMin  # rango final
+        self.bucketRango = self.rango / self.numeroBuckets # rango para funcion hash
         for i in range(self.numeroBuckets):
             self.buckets[i] = ListaEnlazada()
 
@@ -227,8 +237,41 @@ class BucketSort:
             indice = numerodebuckets - 1
         return int(indice)
 
+""" Bucket Sort Implementacion fin"""
 
-lista = [29, 25, 3, 49, 9, 37, 21, 43, 2, 10, 23, 3, 29, 20, 25]
 bucketsort = BucketSort()
-lista = bucketsort.ordenar(lista)
-print(lista)
+
+aleatorios = random.Random()
+
+tiempo_axis_y = []
+tamanio_axis_x = []
+lista2 = []
+
+for n in range(1,11):
+    datosbase = 5000
+    tamanio = datosbase * pow(n,2)
+    for i in range(tamanio): #llenar la lista
+        lista2.append(aleatorios.randint(1,100000))
+
+    inicio_tiempo = time.time()
+    lista2 = bucketsort.ordenar(lista2)
+    fin_tiempo = time.time()
+    tiempo_transcurrido = fin_tiempo - inicio_tiempo
+    tiempo_axis_y.append(tiempo_transcurrido)
+    tamanio_axis_x.append(len(lista2))
+    print(f"Loop: {n} || Datos: {tamanio} || Tiempo de ejecución: {tiempo_transcurrido:.10f} segundos")
+    lista2 = []
+    print()
+
+x_values = tamanio_axis_x
+x_log_n_values = [val * np.log(val) for val in x_values]
+print(x_log_n_values)
+#plt.scatter(x_values, x_log_n_values, s= 200, label="n * log(n)")
+
+plt.scatter(tamanio_axis_x, tiempo_axis_y, s= 200, edgecolors="red")
+plt.xlabel("Tamaño de entrada")
+plt.xlabel("Tiempo")
+plt.title("Grafico de ejecucion BucketSort")
+plt.legend()
+
+plt.show()
