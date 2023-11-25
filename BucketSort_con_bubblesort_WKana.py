@@ -265,13 +265,12 @@ for n in range(1,11):
 
 x_values = tamanio_axis_x
 x_log_n_values = [val * np.log(val) for val in x_values]
-print(x_log_n_values)
+#print(x_log_n_values)
 #plt.scatter(x_values, x_log_n_values, s= 200, label="n * log(n)")
 
-plt.scatter(tamanio_axis_x, tiempo_axis_y, s= 200, edgecolors="red")
+plt.scatter(tamanio_axis_x, tiempo_axis_y, s= 200)
 plt.xlabel("Tamaño de entrada")
 plt.xlabel("Tiempo")
 plt.title("Grafico de ejecucion BucketSort")
-plt.legend()
 
 plt.show()

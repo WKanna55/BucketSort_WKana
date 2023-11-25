@@ -127,118 +127,61 @@ class ListaEnlazada:
             actual = actual.siguiente
         print("None")
 
-    def bubble_sort(self):
-        if not self.cabeza:
-            return
 
-        while True:
-            swapped = False
-            actual = self.cabeza
-            previo = None
-
-            while actual.siguiente:
-                siguiente = actual.siguiente
-                if actual.valor > siguiente.valor:
-                    # Realiza el intercambio de nodos
-                    if previo:
-                        previo.siguiente = siguiente
-                    else:
-                        self.cabeza = siguiente
-
-                    actual.siguiente = siguiente.siguiente
-                    siguiente.siguiente = actual
-                    if self.cola.valor <= actual.valor:
-                        self.cola = actual
-                    swapped = True
-                elif actual.valor <= siguiente.valor:
-                    self.cola = siguiente
-
-                previo = actual
-                actual = siguiente
-
-            if not swapped:
-                break
-
-
-
-    def quick_sort(self, pivote):
-        lista_resultado = ListaEnlazada()
+    def quick_sort(self):
+        if self.contador <= 1:
+            return self
         lista_menor = ListaEnlazada()
         lista_mayor = ListaEnlazada()
-        nodo_pivote = Nodo(pivote.valor)
-        actual = pivote
-        while actual is not None:
+
+        pivote = self.cabeza
+        actual = pivote.siguiente
+        while actual:
             if actual.valor > pivote.valor:
                 lista_mayor.insertar_final(actual.valor)
             elif actual.valor <= pivote.valor:
                 lista_menor.insertar_final(actual.valor)
             actual = actual.siguiente
 
-        return lista_resultado.concatenar_quick_sort(
-            self.quick_sort(lista_menor.cabeza), nodo_pivote, self.quick_sort(lista_mayor.cabeza)
-            )
-
-
+        lista_resultado = self.concatenar_quick_sort(
+            lista_menor.quick_sort(), pivote, lista_mayor.quick_sort())
+        self.cabeza = lista_resultado.cabeza
+        self.cola = lista_resultado.cola
+        return self
 
     def concatenar_quick_sort(self, ll_menor, pivote, ll_mayor):
         lista_resultado = ListaEnlazada()
-        if ll_menor.contador == 0:
+
+        if ll_menor.contador == 0 and ll_mayor.contador == 0:
+            lista_resultado.insertar_final(pivote.valor)
+            return lista_resultado
+
+        elif ll_menor.contador == 0:
             lista_resultado.insertar_final(pivote.valor)
             if ll_mayor.contador == 0:
                 return lista_resultado
             else:
-                for nodo in ll_mayor:
-                    lista_resultado.insertar_final(nodo.valor)
+                actual = ll_mayor.cabeza
+                while actual:
+                    lista_resultado.insertar_final(actual.valor)
+                    actual = actual.siguiente
                 return lista_resultado
         else:
-            for nodo in ll_menor:
-                lista_resultado.insertar_final(nodo.valor)
-            lista_resultado.insertar_final(pivote.valor)
-            if ll_mayor.contador == 0:
-                return lista_resultado
-            else:
-                for nodo in ll_mayor:
-                    lista_resultado.insertar_final(nodo.valor)
-                return lista_resultado
-
-
-
-
-
-
-
-    def insertar_ordenadamente(self, valor):
-        nuevo_nodo = Nodo(valor)
-        if not self.cabeza:
-            self.cabeza = nuevo_nodo
-            self.cola = self.cabeza
-            self.contador += 1
-
-        elif self.cabeza == self.cola:
-            if valor <= self.cabeza.valor:
-                nuevo_nodo.siguiente = self.cola
-                self.cabeza = nuevo_nodo
-                self.contador += 1
-            else:
-                self.cabeza.siguiente = nuevo_nodo
-                self.cola = nuevo_nodo
-                self.contador += 1
-        else:
-            if valor <= self.cabeza.valor:
-                nuevo_nodo.siguiente = self.cabeza
-                self.cabeza = nuevo_nodo
-                self.contador += 1
-                return
-            actual = self.cabeza
-            while actual.siguiente and valor > actual.siguiente.valor:
+            actual = ll_menor.cabeza
+            while actual:
+                lista_resultado.insertar_final(actual.valor)
                 actual = actual.siguiente
 
-            nuevo_nodo.siguiente = actual.siguiente
-            actual.siguiente = nuevo_nodo
-            if valor >= self.cola.valor:
-                self.cola = nuevo_nodo
-            self.contador += 1
+            lista_resultado.insertar_final(pivote.valor)
 
+            if ll_mayor.contador == 0:
+                return lista_resultado
+            else:
+                actual = ll_mayor.cabeza
+                while actual:
+                    lista_resultado.insertar_final(actual.valor)
+                    actual = actual.siguiente
+                return lista_resultado
 
 class BucketSort:
     def __init__(self):
@@ -264,7 +207,7 @@ class BucketSort:
             self.insertar(i, indiceBucket)
 
         for i in self.buckets:
-            i.bubble_sort()
+            i.quick_sort()
 
         lista_ordenada = []
 
@@ -299,69 +242,25 @@ tamanio_axis_x = []
 lista2 = []
 
 
-# for n in range(1,16):
-#    datosbase = 5000
-#    tamanio = datosbase * pow(n,2)
-#    for i in range(tamanio): #llenar la lista
-#        lista2.append(aleatorios.randint(1,100000))
-#
-#    inicio_tiempo = time.time()
-#    lista2 = bucketsort.ordenar(lista2)
-#    fin_tiempo = time.time()
-#    tiempo_transcurrido = fin_tiempo - inicio_tiempo
-#    tiempo_axis_y.append(tiempo_transcurrido)
-#    tamanio_axis_x.append(len(lista2))
-#    print(f"Loop: {n} || Datos: {tamanio} || Tiempo de ejecución: {tiempo_transcurrido:.10f} segundos")
-#    lista2 = []
-#    print()
-#
-#
-# plt.scatter(tamanio_axis_x, tiempo_axis_y, s= 200)
-# plt.xlabel("Tamaño de entrada")
-# plt.xlabel("Tiempo")
-# plt.title("Grafico de ejecucion BucketSort")
-# plt.show()
+for n in range(1,11):
+   datosbase = 5000
+   tamanio = datosbase * pow(n,2)
+   for i in range(tamanio): #llenar la lista
+       lista2.append(aleatorios.randint(1,100000))
 
-# inicio_tiempo = time.time()
-# lista = bucketsort.ordenar(lista)
-# fin_tiempo = time.time()
-# tiempo_transcurrido = fin_tiempo - inicio_tiempo
-# print(f"Tiempo de ejecución: {tiempo_transcurrido:.70f} segundos")
-
-# inicio_tiempo = time.time()
-# lista = bucketsort.ordenar(lista)
-# fin_tiempo = time.time()
-
-# print(lista)
+   inicio_tiempo = time.time()
+   lista2 = bucketsort.ordenar(lista2)
+   fin_tiempo = time.time()
+   tiempo_transcurrido = fin_tiempo - inicio_tiempo
+   tiempo_axis_y.append(tiempo_transcurrido)
+   tamanio_axis_x.append(len(lista2))
+   print(f"Loop: {n} || Datos: {tamanio} || Tiempo de ejecución: {tiempo_transcurrido:.10f} segundos")
+   lista2 = []
+   print()
 
 
-def quicksort(arr):
-    if len(arr) <= 1:
-        return arr
-    else:
-        pivot = arr[0]
-        less_than_pivot = [x for x in arr[1:] if x <= pivot]
-        greater_than_pivot = [x for x in arr[1:] if x > pivot]
-        return quicksort(less_than_pivot) + [pivot] + quicksort(greater_than_pivot)
-
-
-# Ejemplo de uso
-#data = [1, 3, 4, 5, 9, 2, 6, 5, 3, 5]
-
-#sorted_data = quicksort(data)
-#print("Lista ordenada:", sorted_data)
-
-#data2 = data[1:]
-#print(data2)
-
-linkedlist = ListaEnlazada()
-
-linkedlist.insertar_final(52)
-linkedlist.insertar_final(74)
-linkedlist.insertar_final(61)
-linkedlist.insertar_final(96)
-linkedlist.insertar_final(88)
-linkedlist.insertar_final(91)
-linkedlist.insertar_final(99)
-
-linkedlist.quick_sort(linkedlist.cabeza)
+plt.scatter(tamanio_axis_x, tiempo_axis_y, s= 200)
+plt.xlabel("Tamaño de entrada")
+plt.xlabel("Tiempo")
+plt.title("Grafico de ejecucion BucketSort")
+plt.show()
