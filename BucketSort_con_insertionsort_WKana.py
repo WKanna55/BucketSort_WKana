@@ -138,15 +138,18 @@ class BucketSort:
         self.bucketRango = None
 
     def ordenar(self, array):
+        if len(array) <= 1: # caso edge
+            return
+
         self.numeroBuckets = len(array) // 2  # tamaño promedio eficiente
         self.buckets = [None] * self.numeroBuckets
-        self.globalMax = max(array)  # rango minimo
-        self.globalMin = min(array)  # rango maximo
+        self.globalMax = max(array)  # rango minimo # o(n)
+        self.globalMin = min(array)  # rango maximo # o(n)
         self.rango = self.globalMax - self.globalMin  # rango final
         self.bucketRango = self.rango / self.numeroBuckets # rango para funcion hash
 
-        for i in range(self.numeroBuckets): # Crear Buckets: tiempo y espacio O(k)
-            self.buckets[i] = ListaDobleEnlazada() #
+        for i in range(self.numeroBuckets): # Crear Buckets: tiempo y espacio O(n/2)
+            self.buckets[i] = ListaDobleEnlazada()
 
         for i in array: # insercion: tiempo O(n) y espacio O(k*n)
             indiceBucket = self.funcionHash(i, self.bucketRango, self.numeroBuckets)
@@ -266,40 +269,40 @@ aleatorios = random.Random()
 """Eplicacion basica inicio"""
 
 
-lista1 = [12, 9, 24, 4, 19, 21, 14, 6, 2, 16]
-print(lista1)
-lista1 = bucketsort.ordenar(lista1)
-print()
-print(lista1)
+#lista1 = [12, 9, 24, 4, 19, 21, 14, 6, 2, 16]
+#print(lista1)
+#lista1 = bucketsort.ordenar(lista1)
+#print()
+#print(lista1)
 
 """Eplicacion basica fin"""
 
 """Implementacion caso promedio"""
-#tiempo_axis_y = []
-#tamanio_axis_x = []
-#lista2 = []
-#
-#for n in range(1,11):
-#    datosbase = 5000
-#    tamanio = datosbase * pow(n,2)
-#    for i in range(5): #llenar la lista
-#        lista2 = [aleatorios.randint(1,10000) for _ in range(tamanio)]
-#    inicio_tiempo = time.time()
-#    lista2 = bucketsort.ordenar(lista2)
-#    fin_tiempo = time.time()
-#    tiempo_transcurrido = fin_tiempo - inicio_tiempo
-#    tiempo_axis_y.append(tiempo_transcurrido)
-#    tamanio_axis_x.append(len(lista2))
-#    print(f"Loop: {n} || Datos: {tamanio} || Tiempo de ejecución: {tiempo_transcurrido:.10f} segundos")
-#    lista2 = []
-#    print()
-#
-#plt.scatter(tamanio_axis_x, tiempo_axis_y, s= 200)
-#plt.xlabel("Tamaño de entrada")
-#plt.xlabel("Tiempo")
-#plt.title("Grafico de ejecucion BucketSort")
-#
-#plt.show()
+tiempo_axis_y = []
+tamanio_axis_x = []
+lista2 = []
+
+for n in range(1,11):
+    datosbase = 5000
+    tamanio = datosbase * pow(n,2)
+    for i in range(5): #llenar la lista
+        lista2 = [aleatorios.randint(1,10000) for _ in range(tamanio)]
+    inicio_tiempo = time.time()
+    lista2 = bucketsort.ordenar(lista2)
+    fin_tiempo = time.time()
+    tiempo_transcurrido = fin_tiempo - inicio_tiempo
+    tiempo_axis_y.append(tiempo_transcurrido)
+    tamanio_axis_x.append(len(lista2))
+    print(f"Loop: {n} || Datos: {tamanio} || Tiempo de ejecución: {tiempo_transcurrido:.10f} segundos")
+    lista2 = []
+    print()
+
+plt.scatter(tamanio_axis_x, tiempo_axis_y, s= 200)
+plt.xlabel("Tamaño de entrada")
+plt.xlabel("Tiempo")
+plt.title("Grafico de ejecucion BucketSort")
+
+plt.show()
 
 
 """
@@ -339,3 +342,4 @@ Implementacion peor y mejor de los casos
 #plt.title('Bucket Sort el mejor y peor caso')
 #plt.legend()
 #plt.show()
+#
