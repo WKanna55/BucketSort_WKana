@@ -96,7 +96,7 @@ class ListaDobleEnlazada:
             actual = actual.anterior
         print("None")
 
-    def insertion_sort(self):
+    def insertion_sort(self): #
         if self.contador == 0:
             return
         saver = self.cabeza
@@ -145,14 +145,14 @@ class BucketSort:
         self.rango = self.globalMax - self.globalMin  # rango final
         self.bucketRango = self.rango / self.numeroBuckets # rango para funcion hash
 
-        for i in range(self.numeroBuckets):
-            self.buckets[i] = ListaDobleEnlazada()
+        for i in range(self.numeroBuckets): # Crear Buckets: tiempo y espacio O(k)
+            self.buckets[i] = ListaDobleEnlazada() #
 
-        for i in array:
+        for i in array: # insercion: tiempo O(n) y espacio O(k*n)
             indiceBucket = self.funcionHash(i, self.bucketRango, self.numeroBuckets)
             self.insertar(i, indiceBucket)
 
-        for i in self.buckets:
+        for i in self.buckets: #ordenar: tiempo O(n^2/k) == O(k^2/k)
             i.insertion_sort()
 
         lista_ordenada = []
@@ -206,10 +206,11 @@ class BucketSort:
 """
 Analisis de complejidad temporal:
 Mejor Caso:
-    La complejidad de tiempo en el mejor caso para Bucket Sort con Insertion Sort sigue siendo 
-    O(n+k), donde n es el número total de elementos y k es el número de buckets. 
-    Sin embargo, en este caso, el rendimiento será más eficiente porque la carga en cada bucket 
-    es razonable y el ordenamiento dentro de cada bucket es rápido.
+    En el mejor caso, la complejidad temporal de Bucket Sort podría aproximarse a O(n + k), 
+    donde "n" es el número total de elementos y "k" es el número de buckets. 
+    Esto se debe a que, en el mejor caso, cada bucket se ordena eficientemente con 
+    Insertion Sort debido a la distribución uniforme, y luego se combinan para obtener 
+    la salida final.
 
     Distribución Balanceada:
     Los elementos están distribuidos de manera que los buckets tengan una carga equilibrada. 
@@ -243,8 +244,12 @@ Caso Promedio:
     En general, si asumimos que la distribución de elementos es aleatoria y uniforme 
     entre los buckets, y si la estrategia de asignación de elementos es eficiente, 
     el caso promedio puede aproximarse a un rendimiento más cercano al mejor 
-    caso O(n+k) donde n es el número total de elementos y k es el número de buckets.
-    
+    caso O(n+(n^2)/k) == O(n+k) donde n es el número total de elementos y k es el número de buckets.
+
+Complejidad espacio propio:
+En mejor caso: O(n+k)
+En peor caso: O(n)
+En caso promedio: O(n+k)
 """
 
 """
@@ -257,6 +262,17 @@ y luego se aplicara Bucket Sort a estos
 
 bucketsort = BucketSort()
 aleatorios = random.Random()
+
+"""Eplicacion basica inicio"""
+
+
+lista1 = [12, 9, 24, 4, 19, 21, 14, 6, 2, 16]
+print(lista1)
+lista1 = bucketsort.ordenar(lista1)
+print()
+print(lista1)
+
+"""Eplicacion basica fin"""
 
 """Implementacion caso promedio"""
 #tiempo_axis_y = []
@@ -290,36 +306,36 @@ aleatorios = random.Random()
 Implementacion peor y mejor de los casos
 """
 
-array_sizes = [10, 100, 1000, 5000]
-best_case_times = []
-worst_case_times = []
-
-for size in array_sizes:
-    #arr_best = list(range(size))
-    #arr_worst = list(range(size, 0, -1))
-    arr_best = []
-    arr_worst = []
-
-    for i in range(len(array_sizes)):
-        arr_best = [aleatorios.randint(1,1000) for _ in range(array_sizes[i])]
-        arr_worst = [aleatorios.randint(1, 1000) for _ in range(array_sizes[i])]
-
-    # Mejor de los casos
-    start_time = time.time()
-    arr_best = bucketsort.ordenar(arr_best)
-    end_time = time.time()
-    best_case_times.append(end_time - start_time)
-
-    # El peor de los casos
-    start_time = time.time()
-    arr_worst = bucketsort.ordenar_peor_caso(arr_worst)
-    end_time = time.time()
-    worst_case_times.append(end_time - start_time)
-
-plt.plot(array_sizes, best_case_times, label='Mejor de los casos')
-plt.plot(array_sizes, worst_case_times, label='El peor de los casos')
-plt.xlabel('Tamaño del array')
-plt.ylabel('Tiempo (segundos)')
-plt.title('Bucket Sort el mejor y peor caso')
-plt.legend()
-plt.show()
+#array_sizes = [10, 100, 1000, 5000]
+#best_case_times = []
+#worst_case_times = []
+#
+#for size in array_sizes:
+#    #arr_best = list(range(size))
+#    #arr_worst = list(range(size, 0, -1))
+#    arr_best = []
+#    arr_worst = []
+#
+#    for i in range(len(array_sizes)):
+#        arr_best = [aleatorios.randint(1,1000) for _ in range(array_sizes[i])] #arreglar
+#        arr_worst = [aleatorios.randint(1, 1000) for _ in range(array_sizes[i])]
+#
+#    # Mejor de los casos
+#    start_time = time.time()
+#    arr_best = bucketsort.ordenar(arr_best)
+#    end_time = time.time()
+#    best_case_times.append(end_time - start_time)
+#
+#    # El peor de los casos
+#    start_time = time.time()
+#    arr_worst = bucketsort.ordenar_peor_caso(arr_worst)
+#    end_time = time.time()
+#    worst_case_times.append(end_time - start_time)
+#
+#plt.plot(array_sizes, best_case_times, label='Mejor de los casos')
+#plt.plot(array_sizes, worst_case_times, label='El peor de los casos')
+#plt.xlabel('Tamaño del array')
+#plt.ylabel('Tiempo (segundos)')
+#plt.title('Bucket Sort el mejor y peor caso')
+#plt.legend()
+#plt.show()
