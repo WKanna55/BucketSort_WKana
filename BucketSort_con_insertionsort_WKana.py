@@ -266,6 +266,15 @@ y luego se aplicara Bucket Sort a estos
 bucketsort = BucketSort()
 aleatorios = random.Random()
 
+"""----------- comprobar ----------------------------------------------"""
+lista = [aleatorios.randint(1,10000) for _ in range(125000)]
+inicio_tiempo = time.time()
+lista = bucketsort.ordenar(lista)
+fin_tiempo = time.time()
+tiempo_transcurrido = fin_tiempo - inicio_tiempo
+print(f"Loop: 1 || Datos: {125000} || Tiempo de ejecución: {tiempo_transcurrido:.10f} segundos")
+"""----------- comprobar ----------------------------------------------"""
+
 """Eplicacion basica inicio"""
 
 
@@ -278,31 +287,31 @@ aleatorios = random.Random()
 """Eplicacion basica fin"""
 
 """Implementacion caso promedio"""
-tiempo_axis_y = []
-tamanio_axis_x = []
-lista2 = []
-
-for n in range(1,11):
-    datosbase = 5000
-    tamanio = datosbase * pow(n,2)
-    for i in range(5): #llenar la lista
-        lista2 = [aleatorios.randint(1,10000) for _ in range(tamanio)]
-    inicio_tiempo = time.time()
-    lista2 = bucketsort.ordenar(lista2)
-    fin_tiempo = time.time()
-    tiempo_transcurrido = fin_tiempo - inicio_tiempo
-    tiempo_axis_y.append(tiempo_transcurrido)
-    tamanio_axis_x.append(len(lista2))
-    print(f"Loop: {n} || Datos: {tamanio} || Tiempo de ejecución: {tiempo_transcurrido:.10f} segundos")
-    lista2 = []
-    print()
-
-plt.scatter(tamanio_axis_x, tiempo_axis_y, s= 200)
-plt.xlabel("Tamaño de entrada")
-plt.xlabel("Tiempo")
-plt.title("Grafico de ejecucion BucketSort")
-
-plt.show()
+#tiempo_axis_y = []
+#tamanio_axis_x = []
+#lista2 = []
+#
+#for n in range(1,11):
+#    datosbase = 5000
+#    tamanio = datosbase * pow(n,2)
+#    for i in range(5): #llenar la lista
+#        lista2 = [aleatorios.randint(1,10000) for _ in range(tamanio)]
+#    inicio_tiempo = time.time()
+#    lista2 = bucketsort.ordenar(lista2)
+#    fin_tiempo = time.time()
+#    tiempo_transcurrido = fin_tiempo - inicio_tiempo
+#    tiempo_axis_y.append(tiempo_transcurrido)
+#    tamanio_axis_x.append(len(lista2))
+#    print(f"Loop: {n} || Datos: {tamanio} || Tiempo de ejecución: {tiempo_transcurrido:.10f} segundos")
+#    lista2 = []
+#    print()
+#
+#plt.scatter(tamanio_axis_x, tiempo_axis_y, s= 200)
+#plt.xlabel("Tamaño de entrada")
+#plt.xlabel("Tiempo")
+#plt.title("Grafico de ejecucion BucketSort")
+#
+#plt.show()
 
 
 """
