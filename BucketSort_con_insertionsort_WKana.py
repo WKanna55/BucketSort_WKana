@@ -142,7 +142,7 @@ class BucketSort:
             return
 
         self.numeroBuckets = len(array) // 2  # tamaño promedio eficiente
-        self.buckets = [None] * self.numeroBuckets
+        self.buckets = [None] * self.numeroBuckets # arreglar!
         self.globalMax = max(array)  # rango minimo # o(n)
         self.globalMin = min(array)  # rango maximo # o(n)
         self.rango = self.globalMax - self.globalMin  # rango final
